@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ccfbff"
+    tools:context=".MainActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="1143dp"
+        android:layout_height="605dp"
+        android:layout_marginStart="49dp"
+        app:layout_constraintBottom_toBottomOf="@+id/div_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/map" />
+
+    <Button
+        android:id="@+id/div_1"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="468dp"
+        android:layout_marginEnd="306dp"
+        android:layout_marginBottom="34dp"
+        android:background="@drawable/plnning"
+        android:minHeight="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView10"
+        app:layout_constraintEnd_toStartOf="@+id/div_3"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Select"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/div_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="251dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/editorial"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/div_1"
+        app:layout_constraintTop_toBottomOf="@+id/div_4"
+        android:text="Select"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/div_4"
+        android:layout_width="130dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="228dp"
+        android:layout_marginEnd="158dp"
+        android:layout_marginBottom="250dp"
+        android:background="@drawable/executive"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/div_3"
+        app:layout_constraintEnd_toEndOf="@+id/imageView8"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Select"
+
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="942dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="151dp"
+        android:layout_marginEnd="151dp"
+        android:layout_marginBottom="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/div_3"
+        app:srcCompat="@drawable/send_div_mes" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
