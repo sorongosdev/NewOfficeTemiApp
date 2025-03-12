@@ -1,7 +1,6 @@
 package com.example.newofficetemiapp;
 
 import com.bumptech.glide.Glide;
-import com.example.newofficetemiapp.Temi.RoboTemi;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

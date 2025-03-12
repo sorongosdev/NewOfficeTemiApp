@@ -8,11 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.newofficetemiapp.Temi.CustomTtsListener;
-import com.example.newofficetemiapp.Temi.RoboTemi;
-import com.example.newofficetemiapp.Temi.RoboTemiListeners;
 import com.robotemi.sdk.Robot;
-import com.robotemi.sdk.TtsRequest;
 import com.robotemi.sdk.listeners.OnRobotReadyListener;
 
 public class MainActivity extends AppCompatActivity implements

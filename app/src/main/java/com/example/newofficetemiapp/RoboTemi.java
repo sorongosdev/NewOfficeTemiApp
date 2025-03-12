@@ -1,4 +1,4 @@
-package com.example.newofficetemiapp.Temi;
+package com.example.newofficetemiapp;
 
 import android.view.View;
 
