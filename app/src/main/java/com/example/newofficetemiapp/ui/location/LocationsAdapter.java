@@ -13,7 +13,10 @@ import com.example.newofficetemiapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-private static class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationViewHolder> {
+/**
+ * 위치 목록을 표시하기 위한 Adapter
+ */
+public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationViewHolder> {
     private List<String> locations = new ArrayList<>();
     private final OnLocationClickListener listener;
 
@@ -67,5 +70,4 @@ private static class LocationsAdapter extends RecyclerView.Adapter<LocationsAdap
     interface OnLocationClickListener {
         void onLocationClick(String location);
     }
-}
 }

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.robotemi.sdk.Robot;
 import com.robotemi.sdk.TtsRequest;
+import com.robotemi.sdk.navigation.model.SpeedLevel;
 
 public class RoboTemiService {
     private final Robot robot;
@@ -49,7 +50,7 @@ public class RoboTemiService {
     }
 
     public void followMe() {
-        robot.beWithMe();
+        robot.beWithMe(SpeedLevel.MEDIUM);
         speak("테미가 따라갑니다.");
     }
 
