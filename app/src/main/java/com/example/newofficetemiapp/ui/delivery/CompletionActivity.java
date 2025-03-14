@@ -31,13 +31,6 @@ public class CompletionActivity extends BaseActivity<DeliveryViewModel> {
     @Override
     protected void setupViews() {
         homeButton = findViewById(R.id.btn);
-        completionMessageTextView = findViewById(R.id.completionMessageTextView);
-
-        // 인텐트에서 배달 ID 가져오기
-        String deliveryId = getIntent().getStringExtra("deliveryId");
-        if (deliveryId != null) {
-            viewModel.setCurrentDelivery(deliveryId);
-        }
 
         // 홈 버튼 클릭 이벤트
         homeButton.setOnClickListener(v -> {

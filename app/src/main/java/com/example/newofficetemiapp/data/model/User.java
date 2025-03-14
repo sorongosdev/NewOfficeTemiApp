@@ -6,10 +6,6 @@ public class User {
     private String teamName;
     private String cardId;
 
-    // 기본 생성자
-    public User() {
-    }
-
     public User(String id, String name, String teamName, String cardId) {
         this.id = id;
         this.name = name;

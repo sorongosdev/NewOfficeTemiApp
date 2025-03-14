@@ -62,7 +62,6 @@ public abstract class NavBaseViewModel extends BaseViewModel implements TemiNavi
         return currentDestination;
     }
 
-    // 필요시 자식 클래스에서 오버라이드
     @Override
     public void onNavigationStatusChanged(String location, String status) {
         // 기본 구현은 비어있음

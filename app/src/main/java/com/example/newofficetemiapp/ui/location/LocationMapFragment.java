@@ -1,14 +1,7 @@
 package com.example.newofficetemiapp.ui.location;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.newofficetemiapp.R;
 import com.example.newofficetemiapp.ui.base.BaseFragment;
 
@@ -17,17 +10,14 @@ import com.example.newofficetemiapp.ui.base.BaseFragment;
  * 사무실 지도를 표시하고 위치 선택 인터페이스 제공
  */
 public class LocationMapFragment extends BaseFragment<LocationViewModel> {
-    private ImageView mapImageView;
     private Button planningTeamButton;
     private Button editorialTeamButton;
     private Button executiveTeamButton;
-    private Button meetingRoomButton;
-    private RecyclerView locationsRecyclerView;
     private LocationSelectionListener locationSelectionListener;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_location_map;
+        return R.layout.activity_map_click; // 기존 맵 레이아웃 사용
     }
 
     @Override
@@ -37,26 +27,16 @@ public class LocationMapFragment extends BaseFragment<LocationViewModel> {
 
     @Override
     protected void setupViews(View view) {
-        mapImageView = view.findViewById(R.id.mapImageView);
-        planningTeamButton = view.findViewById(R.id.planningTeamButton);
-        editorialTeamButton = view.findViewById(R.id.editorialTeamButton);
-        executiveTeamButton = view.findViewById(R.id.executiveTeamButton);
-        meetingRoomButton = view.findViewById(R.id.meetingRoomButton);
-        locationsRecyclerView = view.findViewById(R.id.locationsRecyclerView);
-
-        // RecyclerView 설정
-        locationsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        LocationsAdapter adapter = new LocationsAdapter(location -> {
-            if (locationSelectionListener != null) {
-                locationSelectionListener.onLocationSelected(location);
-            }
-        });
-        locationsRecyclerView.setAdapter(adapter);
+        planningTeamButton = view.findViewById(R.id.div_1);
+        editorialTeamButton = view.findViewById(R.id.div_3);
+        executiveTeamButton = view.findViewById(R.id.div_4);
 
         // 기획팀 버튼 클릭 이벤트
         planningTeamButton.setOnClickListener(v -> {
             if (locationSelectionListener != null) {
                 locationSelectionListener.onLocationSelected("PlanningTeam");
+            } else {
+                viewModel.setSelectedLocation("PlanningTeam");
             }
         });
 
@@ -64,6 +44,8 @@ public class LocationMapFragment extends BaseFragment<LocationViewModel> {
         editorialTeamButton.setOnClickListener(v -> {
             if (locationSelectionListener != null) {
                 locationSelectionListener.onLocationSelected("EditorialTeam");
+            } else {
+                viewModel.setSelectedLocation("EditorialTeam");
             }
         });
 
@@ -71,23 +53,15 @@ public class LocationMapFragment extends BaseFragment<LocationViewModel> {
         executiveTeamButton.setOnClickListener(v -> {
             if (locationSelectionListener != null) {
                 locationSelectionListener.onLocationSelected("ExecutiveTeam");
-            }
-        });
-
-        // 회의실 버튼 클릭 이벤트
-        meetingRoomButton.setOnClickListener(v -> {
-            if (locationSelectionListener != null) {
-                locationSelectionListener.onLocationSelected("MeetingRoom");
+            } else {
+                viewModel.setSelectedLocation("ExecutiveTeam");
             }
         });
     }
 
     @Override
     protected void observeViewModel() {
-        // 저장된 위치 목록 관찰
-        viewModel.getSavedLocations().observe(getViewLifecycleOwner(), locations -> {
-            ((LocationsAdapter) locationsRecyclerView.getAdapter()).submitList(locations);
-        });
+        // 뷰모델 관찰 로직 (필요한 경우 추가)
     }
 
     public void setLocationSelectionListener(LocationSelectionListener listener) {
@@ -100,5 +74,4 @@ public class LocationMapFragment extends BaseFragment<LocationViewModel> {
     public interface LocationSelectionListener {
         void onLocationSelected(String location);
     }
-
-/**
+}
