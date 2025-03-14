@@ -81,6 +81,63 @@ gradlew.bat --refresh-dependencies
 
 ## 📁 5. 프로젝트 구조
 ```
+newofficetemiapp
+├── data
+│   ├── model
+│   │   ├── DeliveryStatus.java
+│   │   ├── Location.java
+│   │   └── User.java
+│   ├── repository
+│   │   ├── FirebaseRepository.java
+│   │   ├── TemiRepository.java
+│   │   └── UserRepository.java
+├── temi
+│   ├── RoboTemiService.java
+│   └── TemiNavigationHelper.java
+├── ui
+│   ├── base
+│   │   ├── BaseActivity.java
+│   │   ├── BaseFragment.java
+│   │   ├── BaseViewModel.java
+│   │   └── NavBaseViewModel.java
+│   ├── call
+│   │   ├── CallActivity.java
+│   │   └── CallViewModel.java
+│   ├── delivery
+│   │   ├── CardReceiveActivity.java
+│   │   ├── CardSendActivity.java
+│   │   ├── CompletionActivity.java
+│   │   ├── DeliveringActivity.java
+│   │   ├── DeliveryActivity.java
+│   │   ├── DeliveryAdapter.java
+│   │   ├── DeliveryStatusActivity.java
+│   │   ├── DeliveryViewModel.java
+│   │   └── PullActivity.java
+│   ├── firebase
+│   │   ├── FirebaseActivity.java
+│   │   └── FirebaseViewModel.java
+│   ├── hello
+│   │   ├── HelloActivity.java
+│   │   └── HelloViewModel.java
+│   ├── location
+│   │   ├── LocationActivity.java
+│   │   ├── LocationMapFragment.java
+│   │   └── LocationViewModel.java
+│   ├── main
+│   │   ├── MainActivity.java
+│   │   └── MainViewModel.java
+│   ├── meeting
+│   │   ├── MeetingActivity.java
+│   │   └── MeetingViewModel.java
+│   ├── menu
+│   │   ├── MenuActivity.java
+│   │   └── MenuViewModel.java
+│   └── patrol
+│       ├── PatrolActivity.java
+│       └── PatrolViewModel.java
+└── util
+    ├── Constants.java
+    └── RobotUtils.java
 
 ```
 
