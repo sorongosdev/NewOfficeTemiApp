@@ -46,8 +46,9 @@ public class DeliveryAdapter extends ListAdapter<DeliveryStatus, DeliveryAdapter
     @NonNull
     @Override
     public DeliveryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // 대체 레이아웃으로 call.xml 사용 - 간단한 아이템 표시 가능한 레이아웃
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_delivery, parent, false);
+                .inflate(R.layout.call, parent, false);
         return new DeliveryViewHolder(view);
     }
 
@@ -58,48 +59,38 @@ public class DeliveryAdapter extends ListAdapter<DeliveryStatus, DeliveryAdapter
     }
 
     static class DeliveryViewHolder extends RecyclerView.ViewHolder {
-        private final TextView senderTextView;
-        private final TextView receiverTextView;
-        private final TextView routeTextView;
-        private final TextView statusTextView;
-        private final TextView timeTextView;
+        private final TextView actionTextView; // call.xml의 action1 TextView 사용
 
         public DeliveryViewHolder(@NonNull View itemView) {
             super(itemView);
-            senderTextView = itemView.findViewById(R.id.senderTextView);
-            receiverTextView = itemView.findViewById(R.id.receiverTextView);
-            routeTextView = itemView.findViewById(R.id.routeTextView);
-            statusTextView = itemView.findViewById(R.id.statusTextView);
-            timeTextView = itemView.findViewById(R.id.timeTextView);
+            actionTextView = itemView.findViewById(R.id.action1);
         }
 
         public void bind(DeliveryStatus delivery, OnDeliveryClickListener listener) {
-            senderTextView.setText(delivery.getSenderId());
-            receiverTextView.setText(delivery.getReceiverId());
-            routeTextView.setText(delivery.getSourceLocation() + " → " + delivery.getTargetLocation());
+            // call.xml에는 하나의 TextView만 있으므로 모든 정보를 하나의 문자열로 결합
+            String deliveryInfo = "발신자: " + delivery.getSenderId() +
+                    "\n수신자: " + delivery.getReceiverId() +
+                    "\n경로: " + delivery.getSourceLocation() + " → " + delivery.getTargetLocation() +
+                    "\n상태: " + getStatusText(delivery.getStatus()) +
+                    "\n시간: " + DATE_FORMAT.format(new Date(delivery.getTimestamp()));
 
-            // 상태에 따라 색상 및 텍스트 변경
+            actionTextView.setText(deliveryInfo);
+
+            // 상태에 따라 색상 변경
             switch (delivery.getStatus()) {
                 case DeliveryStatus.STATUS_PENDING:
-                    statusTextView.setText("배달 대기중");
-                    statusTextView.setTextColor(itemView.getResources().getColor(android.R.color.holo_blue_dark));
+                    actionTextView.setTextColor(itemView.getResources().getColor(android.R.color.holo_blue_dark));
                     break;
                 case DeliveryStatus.STATUS_IN_PROGRESS:
-                    statusTextView.setText("배달 중");
-                    statusTextView.setTextColor(itemView.getResources().getColor(android.R.color.holo_orange_dark));
+                    actionTextView.setTextColor(itemView.getResources().getColor(android.R.color.holo_orange_dark));
                     break;
                 case DeliveryStatus.STATUS_COMPLETED:
-                    statusTextView.setText("배달 완료");
-                    statusTextView.setTextColor(itemView.getResources().getColor(android.R.color.holo_green_dark));
+                    actionTextView.setTextColor(itemView.getResources().getColor(android.R.color.holo_green_dark));
                     break;
                 case DeliveryStatus.STATUS_FAILED:
-                    statusTextView.setText("배달 실패");
-                    statusTextView.setTextColor(itemView.getResources().getColor(android.R.color.holo_red_dark));
+                    actionTextView.setTextColor(itemView.getResources().getColor(android.R.color.holo_red_dark));
                     break;
             }
-
-            // 시간 형식화
-            timeTextView.setText(DATE_FORMAT.format(new Date(delivery.getTimestamp())));
 
             // 클릭 리스너 설정
             itemView.setOnClickListener(v -> {
@@ -107,6 +98,21 @@ public class DeliveryAdapter extends ListAdapter<DeliveryStatus, DeliveryAdapter
                     listener.onDeliveryClick(delivery);
                 }
             });
+        }
+
+        private String getStatusText(String status) {
+            switch (status) {
+                case DeliveryStatus.STATUS_PENDING:
+                    return "배달 대기중";
+                case DeliveryStatus.STATUS_IN_PROGRESS:
+                    return "배달 중";
+                case DeliveryStatus.STATUS_COMPLETED:
+                    return "배달 완료";
+                case DeliveryStatus.STATUS_FAILED:
+                    return "배달 실패";
+                default:
+                    return "알 수 없음";
+            }
         }
     }
 

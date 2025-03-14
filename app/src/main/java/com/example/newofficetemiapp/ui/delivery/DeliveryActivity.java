@@ -5,88 +5,56 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.newofficetemiapp.R;
-import com.example.newofficetemiapp.ui.base.BaseActivity;
 import com.example.newofficetemiapp.ui.location.LocationActivity;
 
 /**
  * 배달 메인 화면
  * 배달 목록을 표시하고 새 배달 시작 버튼을 제공
  */
-public class DeliveryActivity extends BaseActivity<DeliveryViewModel> {
-    private RecyclerView deliveryRecyclerView;
-    private DeliveryAdapter deliveryAdapter;
+public class DeliveryActivity extends AppCompatActivity {
     private Button newDeliveryButton;
-    private TextView emptyView;
+    private Button button2;
+    private TextView textView1;
 
     @Override
-    protected int getLayoutId() {
-        return R.layout.activity_delivery;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main); // 기존 activity_main.xml 사용
+
+        setupViews();
+        setupListeners();
     }
 
-    @Override
-    protected Class<DeliveryViewModel> getViewModelClass() {
-        return DeliveryViewModel.class;
+    private void setupViews() {
+        // activity_main.xml의 실제 ID 사용
+        textView1 = findViewById(R.id.textView1);
+        textView1.setText("배달 서비스");
+
+        // activity_main.xml의 버튼 ID로 변경
+        newDeliveryButton = findViewById(R.id.button5); // 순찰 버튼 -> 새 배달 버튼으로 용도 변경
+        newDeliveryButton.setText("새 배달");
+
+        button2 = findViewById(R.id.button2); // 서류 버튼 -> 배달 목록 버튼으로 용도 변경
+        button2.setText("배달 목록");
     }
 
-    @Override
-    protected void setupViews() {
-        deliveryRecyclerView = findViewById(R.id.deliveryRecyclerView);
-        newDeliveryButton = findViewById(R.id.newDeliveryButton);
-        emptyView = findViewById(R.id.emptyView);
-
-        // RecyclerView 설정
-        deliveryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        deliveryAdapter = new DeliveryAdapter(delivery -> {
-            // 배달 항목 클릭 시 상세 화면으로 이동
-            Intent intent = new Intent(this, DeliveryStatusActivity.class);
-            intent.putExtra("deliveryId", delivery.getId());
-            startActivity(intent);
-        });
-        deliveryRecyclerView.setAdapter(deliveryAdapter);
-
+    private void setupListeners() {
         // 새 배달 버튼 클릭 이벤트
         newDeliveryButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, LocationActivity.class);
             startActivity(intent);
-        });
-    }
-
-    @Override
-    protected void observeViewModel() {
-        // 배달 목록 관찰
-        viewModel.getDeliveries().observe(this, deliveries -> {
-            deliveryAdapter.submitList(deliveries);
-
-            // 빈 상태 처리
-            if (deliveries.isEmpty()) {
-                deliveryRecyclerView.setVisibility(View.GONE);
-                emptyView.setVisibility(View.VISIBLE);
-            } else {
-                deliveryRecyclerView.setVisibility(View.VISIBLE);
-                emptyView.setVisibility(View.GONE);
-            }
+            Toast.makeText(this, "배달 위치 선택 화면으로 이동합니다", Toast.LENGTH_SHORT).show();
         });
 
-        // 로딩 상태 관찰
-        viewModel.isLoading().observe(this, isLoading -> {
-            // 로딩 상태에 따라 UI 업데이트
+        // 배달 목록 버튼 클릭 이벤트
+        button2.setOnClickListener(v -> {
+            Toast.makeText(this, "배달 목록을 불러옵니다", Toast.LENGTH_SHORT).show();
+            // 여기서 배달 목록 화면으로 이동하거나 목록을 표시하는 로직 추가
         });
-
-        // 에러 메시지 관찰
-        viewModel.getErrorMessage().observe(this, errorMsg -> {
-            if (errorMsg != null && !errorMsg.isEmpty()) {
-                // 에러 메시지 표시
-                showToast(errorMsg);
-            }
-        });
-    }
-
-    private void showToast(String message) {
-        // 토스트 메시지 표시
     }
 }

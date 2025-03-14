@@ -23,18 +23,14 @@ import java.util.Locale;
 public class DeliveryStatusActivity extends BaseActivity<DeliveryViewModel> {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
 
-    private TextView senderTextView;
-    private TextView receiverTextView;
-    private TextView routeTextView;
-    private TextView statusTextView;
-    private TextView timeTextView;
+    private TextView goDiv; // go_div를 상태 텍스트뷰로 사용
     private ImageView senderImageView;
     private ImageView receiverImageView;
-    private Button actionButton;
+    private ImageView deliveryGifImage; // 배달 이미지로 사용
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_delivery_status;
+        return R.layout.delivering; // delivering.xml 사용
     }
 
     @Override
@@ -44,25 +40,24 @@ public class DeliveryStatusActivity extends BaseActivity<DeliveryViewModel> {
 
     @Override
     protected void setupViews() {
-        senderTextView = findViewById(R.id.senderTextView);
-        receiverTextView = findViewById(R.id.receiverTextView);
-        routeTextView = findViewById(R.id.routeTextView);
-        statusTextView = findViewById(R.id.statusTextView);
-        timeTextView = findViewById(R.id.timeTextView);
-        senderImageView = findViewById(R.id.senderImageView);
-        receiverImageView = findViewById(R.id.receiverImageView);
-        actionButton = findViewById(R.id.actionButton);
+        // delivering.xml의 컴포넌트들 사용
+        goDiv = findViewById(R.id.go_div);
+        senderImageView = findViewById(R.id.Sender_image);
+        receiverImageView = findViewById(R.id.Receiver_image);
+        deliveryGifImage = findViewById(R.id.imageView3);
 
         // 인텐트에서 배달 ID 가져오기
         String deliveryId = getIntent().getStringExtra("deliveryId");
         if (deliveryId != null) {
             viewModel.setCurrentDelivery(deliveryId);
+            goDiv.setText("배달 ID: " + deliveryId);
         }
 
-        // 액션 버튼 클릭 이벤트
-        actionButton.setOnClickListener(v -> {
+        // 액션 버튼은 별도로 없으므로 senderImageView를 클릭 가능하게 설정
+        senderImageView.setOnClickListener(v -> {
             DeliveryStatus delivery = viewModel.getCurrentDelivery().getValue();
             if (delivery != null) {
+                // 상태에 따른 작업 처리
                 switch (delivery.getStatus()) {
                     case DeliveryStatus.STATUS_PENDING:
                         // 대기 중이면 배달 시작
@@ -105,42 +100,37 @@ public class DeliveryStatusActivity extends BaseActivity<DeliveryViewModel> {
     }
 
     private void updateDeliveryInfo(DeliveryStatus delivery) {
-        senderTextView.setText(delivery.getSenderId());
-        receiverTextView.setText(delivery.getReceiverId());
-        routeTextView.setText(delivery.getSourceLocation() + " → " + delivery.getTargetLocation());
-        timeTextView.setText(DATE_FORMAT.format(new Date(delivery.getTimestamp())));
-
-        // 상태에 따른 UI 업데이트
-        switch (delivery.getStatus()) {
-            case DeliveryStatus.STATUS_PENDING:
-                statusTextView.setText("배달 대기중");
-                actionButton.setText("배달 시작");
-                actionButton.setVisibility(View.VISIBLE);
-                break;
-
-            case DeliveryStatus.STATUS_IN_PROGRESS:
-                statusTextView.setText("배달 중");
-                actionButton.setText("전달하기");
-                actionButton.setVisibility(View.VISIBLE);
-                break;
-
-            case DeliveryStatus.STATUS_COMPLETED:
-                statusTextView.setText("배달 완료");
-                actionButton.setText("돌아가기");
-                actionButton.setVisibility(View.VISIBLE);
-                break;
-
-            case DeliveryStatus.STATUS_FAILED:
-                statusTextView.setText("배달 실패");
-                actionButton.setVisibility(View.GONE);
-                break;
-        }
+        // 상태 텍스트 및 경로 정보를 go_div에 표시
+        goDiv.setText(String.format(Locale.KOREA,
+                "발신: %s → 수신: %s\n경로: %s → %s\n상태: %s\n시간: %s",
+                delivery.getSenderId(),
+                delivery.getReceiverId(),
+                delivery.getSourceLocation(),
+                delivery.getTargetLocation(),
+                getStatusText(delivery.getStatus()),
+                DATE_FORMAT.format(new Date(delivery.getTimestamp()))
+        ));
 
         // 발신자 이미지 설정
         setSenderImage(delivery.getSenderId());
 
         // 수신자 이미지 설정
         setReceiverImage(delivery.getReceiverId());
+    }
+
+    private String getStatusText(String status) {
+        switch (status) {
+            case DeliveryStatus.STATUS_PENDING:
+                return "배달 대기중";
+            case DeliveryStatus.STATUS_IN_PROGRESS:
+                return "배달 중";
+            case DeliveryStatus.STATUS_COMPLETED:
+                return "배달 완료";
+            case DeliveryStatus.STATUS_FAILED:
+                return "배달 실패";
+            default:
+                return "알 수 없음";
+        }
     }
 
     private void setSenderImage(String sender) {
@@ -164,19 +154,19 @@ public class DeliveryStatusActivity extends BaseActivity<DeliveryViewModel> {
     private void setReceiverImage(String receiver) {
         if (receiver == null) return;
 
+        // delivering.xml에는 이미지 리소스가 다를 수 있으므로 기존 리소스를 사용
         if ("jiyun".equals(receiver)) {
-            receiverImageView.setImageResource(R.drawable.jiyun2);
+            receiverImageView.setImageResource(R.drawable.jiyun);
         } else if ("jongchan".equals(receiver)) {
             receiverImageView.setImageResource(R.drawable.jongchan);
         } else if ("sora".equals(receiver)) {
-            receiverImageView.setImageResource(R.drawable.sora2);
+            receiverImageView.setImageResource(R.drawable.sora);
         } else if ("sunghoon".equals(receiver)) {
             receiverImageView.setImageResource(R.drawable.sunghoon);
         } else if ("youngro".equals(receiver)) {
-            receiverImageView.setImageResource(R.drawable.youngro2);
+            receiverImageView.setImageResource(R.drawable.youngro);
         } else if ("yusin".equals(receiver)) {
             receiverImageView.setImageResource(R.drawable.yushin);
         }
     }
 }
-// 완료된 경우
